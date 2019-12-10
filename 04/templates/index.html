@@ -1,0 +1,39 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Главная</title>
+</head>
+
+<body>
+  <div class="header">
+    <a href="/">Главная</a>
+    <a href="/about">О себе</a>
+    <a href="/table">Таблица</a>
+  </div>
+  <div class="content">
+    <div>Result: <span id="res"></span></div>
+    <form id="form">
+      <input id="text" placeholder="Выражение" />
+      <button type="submit">go</button>
+    </form>
+  </div>
+
+  <script>
+    document.querySelector('#form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      let text = document.querySelector('#text').value;
+      let result = document.querySelector('#res');
+      fetch(`/api/distribution`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text: text }),
+      })
+        .then((response) => response.json())
+        .then((data) => result.innerHTML = data.result);
+      return false;
+    });
+  </script>
+</body>
+</html>
