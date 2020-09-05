@@ -1,11 +1,12 @@
-from websocket import create_connection
+import socket
 
-if __name__ == "__main__":
-    ws = create_connection('ws://localhost:12345/echo')
-    message = input('input text: ')
-    ws.send(message)
-    print('Sent')
-    print('Receiving...')
-    result = ws.recv()
-    print(f'Received:\n{result}')
-    ws.close()
+HOST = '127.0.0.1'  # The server's hostname or IP address
+PORT = 5000         # The port used by the server
+
+if __name__ == '__main__':
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        s.connect((HOST, PORT))
+        s.sendall(str.encode(input('Enter message: ')))
+        data = s.recv(1024)
+
+    print(f'Received: "{data.decode("utf-8")}"')
